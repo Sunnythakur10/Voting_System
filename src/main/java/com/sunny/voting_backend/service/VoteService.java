@@ -7,8 +7,11 @@ import com.sunny.voting_backend.model.Vote;
 import com.sunny.voting_backend.repository.CandidateRepository;
 import com.sunny.voting_backend.repository.UserRepository;
 import com.sunny.voting_backend.repository.VoteRepository;
+import com.sunny.voting_backend.repository.VoteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VoteService {
@@ -17,8 +20,9 @@ public class VoteService {
     private final VoteRepository voteRepository;
     @Autowired
     public VoteService(CandidateRepository candidateRepository, UserRepository userRepository, VoteRepository voteRepository) {
-        this.candidateRepository = candidateRepository;
         this.userRepository = userRepository;
+        this.candidateRepository = candidateRepository;
+
         this.voteRepository = voteRepository;
     }
 
@@ -44,6 +48,10 @@ public class VoteService {
 
         return voteRepository.save(vote);
 
+    }
+
+    public List<VoteResult> getResults() {
+        return voteRepository.countVotesByCandidate();
     }
 
 

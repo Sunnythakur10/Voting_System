@@ -18,9 +18,6 @@ public class Candidate {
     private String party;
 
     @Column(nullable = false)
-    private int voteCount;
-
-    @Column(nullable = false)
     @Min(value=18 , message = "Candidate must be above 18 year")
     private int age;
 
@@ -32,7 +29,6 @@ public class Candidate {
         this.name = name;
         this.party = party;
         this.age = age;
-        this.voteCount = 0;
 
     }
 
@@ -54,13 +50,6 @@ public class Candidate {
     }
     public void setParty(String party){
         this.party = party;
-    }
-
-    public Integer getVoteCount(){
-        return voteCount;
-    }
-    public void setVoteCount(int voteCount){
-        this.voteCount = voteCount;
     }
 
 

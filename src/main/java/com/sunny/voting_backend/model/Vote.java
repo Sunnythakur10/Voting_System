@@ -16,7 +16,7 @@ public class Vote {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "candidate_id" , nullable = false , unique = true)
+    @JoinColumn(name = "candidate_id" , nullable = false )
     private Candidate candidate;
 
     private LocalDateTime timestamp;
