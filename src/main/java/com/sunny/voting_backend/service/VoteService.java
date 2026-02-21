@@ -1,6 +1,8 @@
 package com.sunny.voting_backend.service;
 
 import com.sunny.voting_backend.dto.VoteRequest;
+import com.sunny.voting_backend.exception.UserAlreadyVotedException;
+import com.sunny.voting_backend.model.ApplicationStatus;
 import com.sunny.voting_backend.model.Candidate;
 import com.sunny.voting_backend.model.User;
 import com.sunny.voting_backend.model.Vote;
@@ -10,6 +12,7 @@ import com.sunny.voting_backend.repository.VoteRepository;
 import com.sunny.voting_backend.repository.VoteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,24 +30,26 @@ public class VoteService {
     }
 
 
-
-    public Vote castVote(VoteRequest Request){
+    @Transactional
+    public Vote castVote(VoteRequest Request , String currentUsername){
 
         //fetching user detail
-        User user = userRepository.findById(Request.getUserId()).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepository.findByUsername(currentUsername).orElseThrow(()->new RuntimeException("User not found"));
 
         //fetching the candidate detail
-        Candidate candidate = candidateRepository.findById(Request.getCandidateId()).orElseThrow(()-> new RuntimeException("candidate not found"));
+        Candidate candidate = candidateRepository. findByIdAndStatus(Request.getCandidateId() , ApplicationStatus.APPROVED).orElseThrow(()-> new RuntimeException("candidate not found"));
 
         //Checking the logic
         if(voteRepository.existsByUserId(user.getId())){
-            throw new RuntimeException("User has already voted!!");
+            throw new UserAlreadyVotedException("User has already voted!!");
 
         }
 
         Vote vote = new Vote();
         vote.setUser(user);
         vote.setCandidate(candidate);
+
+        user.setHasVoted(true);
 
         return voteRepository.save(vote);
 

@@ -1,16 +1,10 @@
 package com.sunny.voting_backend.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class VoteRequest {
-    private Long userId;
+    @NotNull(message = "Candidate ID cannot be null")
     private Long candidateId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Long getCandidateId() {
         return candidateId;

@@ -19,16 +19,15 @@ public class VotingBackendApplication {
 	@Bean
 	public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return (args) -> {
-			// Check if user exists so we don't create duplicates
-			if (userRepository.findByUsername("sunny").isEmpty()) {
-				User user = new User();
-				user.setUsername("sunny");
-				// CRITICAL: We encode the password! "12345" becomes "$2a$10$..."
-				user.setPassword(passwordEncoder.encode("12345"));
-				user.setRole("ROLE_VOTER");
+			// Check if the Super Admin exists
+			if (userRepository.findByUsername("admin").isEmpty()) {
+				User admin = new User();
+				admin.setUsername("admin");
+				admin.setPassword(passwordEncoder.encode("admin123"));
+				admin.setRole("ADMIN"); // <--- CRITICAL: Give them the keys to the kingdom
 
-				userRepository.save(user);
-				System.out.println("✅ Test User Created: sunny / 12345");
+				userRepository.save(admin);
+				System.out.println("✅ Super Admin Bootstrapped: admin / admin123");
 			}
 		};
 	}

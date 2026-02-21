@@ -2,16 +2,13 @@ package com.sunny.voting_backend.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,14 +36,13 @@ public class JwtUtil {
                 .signWith(getSignKey())
                 .compact();
 
-
     }
 
     // Method 2: Validate the Token
-    public Boolean validateToken(String token, String username) {
+    public Boolean validateToken(String token, UserDetails userDetails) {
         final String extractedUsername = extractUsername(token);
         // If names match AND token is not expired, return true
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+        return (extractedUsername.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     // Helper: Pull the username out of the token

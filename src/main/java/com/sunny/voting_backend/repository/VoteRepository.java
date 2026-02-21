@@ -14,6 +14,7 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     @Query("SELECT c.name as candidateName, c.party as party, COUNT(v) as voteCount " +
             "FROM Vote v " +
             "JOIN v.candidate c " +
-            "GROUP BY c.id, c.name, c.party")
+            "GROUP BY c.id, c.name, c.party " +
+            "Order BY voteCount DESC")
     List<VoteResult> countVotesByCandidate();
 }

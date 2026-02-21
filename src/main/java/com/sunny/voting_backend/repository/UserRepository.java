@@ -9,5 +9,9 @@ import java.util.Optional;
 //This repository files are used for data access that's why this is the part of data access layer
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    // Spring Boot writes the SQL for this automatically!
+    // It translates to: SELECT * FROM users WHERE username = ?
     Optional<User> findByUsername(String username);
+    boolean existsByUsername(String username);
+    void deleteByUsername(String username);
 }

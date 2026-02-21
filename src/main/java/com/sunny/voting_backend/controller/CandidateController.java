@@ -1,11 +1,13 @@
 package com.sunny.voting_backend.controller;
 
+import com.sunny.voting_backend.model.ApplicationStatus;
 import com.sunny.voting_backend.model.Candidate;
 import com.sunny.voting_backend.repository.CandidateRepository;
 import com.sunny.voting_backend.service.CandidateService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class CandidateController {
     // POST request to create a candidate
     // URL: http://localhost:8080/api/candidates/create
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('USER' , 'ADMIN')")
     public ResponseEntity<Candidate> createCandidate(@Valid @RequestBody Candidate candidate) {
         Candidate savedCandidate = candidateService.addCandidate(candidate);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCandidate);
@@ -35,17 +38,12 @@ public class CandidateController {
     // URL: http://localhost:8080/api/candidates/all
     @GetMapping("/all")
     public List<Candidate> getAllCandidates() {
-        return candidateService.getAllCandidates();
+        return candidateService.getAllCandidates(ApplicationStatus.APPROVED);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public ResponseEntity<Void> deleteCandidate(@PathVariable Long id) {
-        Candidate candidate = candidateRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Candidate is available at this id"));
-        candidateService.deleteCandidate(id);
-        return ResponseEntity.noContent().build(); // 204
-    }
 
-    @GetMapping("{id}")
+
+    @GetMapping("/{id}")
     public ResponseEntity<Candidate> getCandidateById(@PathVariable Long id){
         Candidate candidate = candidateService.getCandidateById(id);
         return ResponseEntity.ok(candidate);

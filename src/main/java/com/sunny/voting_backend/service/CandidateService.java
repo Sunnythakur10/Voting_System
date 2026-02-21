@@ -1,5 +1,6 @@
 package com.sunny.voting_backend.service;
 
+import com.sunny.voting_backend.model.ApplicationStatus;
 import com.sunny.voting_backend.model.Candidate;
 import com.sunny.voting_backend.repository.CandidateRepository;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class CandidateService {
     }
 
     // Method to get all candidates
-    public List<Candidate> getAllCandidates() {
-        return candidateRepository.findAll();
+    public List<Candidate> getAllCandidates(ApplicationStatus status) {
+        return candidateRepository.findByStatus(status);
     }
 
     public void deleteCandidate(Long id){

@@ -7,8 +7,10 @@ import com.sunny.voting_backend.repository.UserRepository;
 import com.sunny.voting_backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,17 +26,13 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.addUser(user);
+//    @PostMapping("/create")
+//    public ResponseEntity<User> createUser(@RequestBody User user){
+//        User savedUser = userService.RegisterUser(user);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+//    }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-    }
-
-    @GetMapping("/all")
-    public List<User> getAllUser(){
-        return userService.getAllUser();
-    }
 
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
@@ -47,6 +45,13 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable Long id){
         User user = userService.getUserById(id);
         return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/delete/me")
+    public ResponseEntity<String> deleteMyAccount(Principal principal){
+        String currentUsername = principal.getName();
+        userService.deleteUserByUsername(currentUsername);
+        return ResponseEntity.ok("Account Deleted Successfully");
     }
 
 }
