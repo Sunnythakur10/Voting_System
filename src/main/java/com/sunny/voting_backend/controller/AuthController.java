@@ -28,7 +28,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final UserService userService;
 
@@ -38,7 +37,6 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
 
     }

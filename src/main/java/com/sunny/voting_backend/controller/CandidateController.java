@@ -18,11 +18,9 @@ import java.util.NoSuchElementException;
 public class CandidateController {
 
     private final CandidateService candidateService;
-    private final CandidateRepository candidateRepository;
 
     public CandidateController(CandidateService candidateService, CandidateRepository candidateRepository) {
         this.candidateService = candidateService;
-        this.candidateRepository = candidateRepository;
     }
 
     // POST request to create a candidate

@@ -1,12 +1,15 @@
 package com.sunny.voting_backend.controller;
 
 
+import com.sunny.voting_backend.dto.ElectionTimeRequest;
 import com.sunny.voting_backend.model.ApplicationStatus;
 import com.sunny.voting_backend.model.Candidate;
+import com.sunny.voting_backend.model.ElectionState;
 import com.sunny.voting_backend.model.User;
 import com.sunny.voting_backend.repository.CandidateRepository;
 import com.sunny.voting_backend.repository.UserRepository;
 import com.sunny.voting_backend.service.CandidateService;
+import com.sunny.voting_backend.service.ElectionStateService;
 import com.sunny.voting_backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,12 +27,14 @@ public class AdminController {
     private final CandidateRepository candidateRepository;
     private final CandidateService candidateService;
     private final UserRepository userRepository;
+    private final ElectionStateService electionStateService;
 
-    public AdminController(UserService userService, CandidateRepository candidateRepository, CandidateService candidateService, UserRepository userRepository) {
+    public AdminController(UserService userService, CandidateRepository candidateRepository, CandidateService candidateService, UserRepository userRepository, ElectionStateService electionStateService) {
         this.userService = userService;
         this.candidateRepository = candidateRepository;
         this.candidateService = candidateService;
         this.userRepository = userRepository;
+        this.electionStateService = electionStateService;
     }
 
     // GET /api/admin/users
@@ -76,5 +81,11 @@ public class AdminController {
         User user = userRepository.findById(id).orElseThrow(()-> new NoSuchElementException("The id is not found"));
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/election/configure")
+    public ResponseEntity<ElectionState> configureElection(@RequestBody ElectionTimeRequest electionTimeRequest){
+        ElectionState updateState = electionStateService.configureElection(electionTimeRequest);
+        return ResponseEntity.ok(updateState);
     }
 }
