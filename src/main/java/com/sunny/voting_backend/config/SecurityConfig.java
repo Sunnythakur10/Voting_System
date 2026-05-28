@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
-@Configuration // 👈 IMPORTANT: This tells Spring "Look inside here for Beans!"
+@Configuration // IMPORTANT: This tells Spring "Look inside here for Beans!"
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -34,7 +34,6 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-    // 👇 THIS IS THE MISSING BEAN causing your error
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -1,5 +1,6 @@
 package com.sunny.voting_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ public class ElectionState {
     private Long id=1L;
 
     @Column(name="election_name")
+
     private String electionName;
 
     @Column(name="start_time")
@@ -28,10 +30,11 @@ public class ElectionState {
         this.id = id;
     }
 
+    @JsonProperty("electionName")
     public String getElectionName() {
         return electionName;
     }
-
+    @JsonProperty("electionName")
     public void setElectionName(String electionName) {
         this.electionName = electionName;
     }

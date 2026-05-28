@@ -24,6 +24,7 @@ public class ElectionStateService {
 
         electionState.setStartTime(request.getStartTime());
         electionState.setEndTime(request.getEnd_time());
+        electionState.setElectionName(request.getElectionName());
 
         return electionStateRepository.save(electionState);
 

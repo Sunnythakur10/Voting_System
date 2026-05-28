@@ -53,7 +53,7 @@ public class AdminController {
 
     // PUT /api/admin/candidates/1/approve
     @PutMapping("/candidates/{id}/approve")
-    public ResponseEntity<Candidate> approveCandidate(@PathVariable Long id){
+    public ResponseEntity<Candidate> approveCandidate(@PathVariable("id") Long id){
         Candidate updateCandidate = candidateRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Candidate not found"));
         updateCandidate.setStatus(ApplicationStatus.APPROVED);
         candidateRepository.save(updateCandidate);
